@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Person</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-primary navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">MyWebClient</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Person</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/accountList}">Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/tournamentList}">Tournament</a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-primary border" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<br/>
+
+
+
+<div class="container">
+    <h3>Person</h3>
+
+    <hr/>
+    <a th:href="@{/personList/update(personId=${person.getPersonId()})}" class="btn btn-primary">Update</a>
+    <a th:href="@{/personList/tournaments(personId=${person.getPersonId()})}" class="btn btn-info">Checkout tournaments</a>
+    <br/><br/>
+    <table class="table">
+        <thead>
+        <tr class="table-info">
+            <th scope="col" class="table-primary">Person ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Accounts</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Day of birth</th>
+            <th scope="col">Age</th>
+            <th scope="col">Street</th>
+            <th scope="col">City</th>
+            <th scope="col">Postal code</th>
+            <th scope="col">Phone number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row" th:text="${person.getPersonId()}" class="table-primary"></th>
+            <td th:text="${person.getName()}"></td>
+            <td th:text="${person.getNumberOfAccounts()}"></td>
+            <td th:text="${person.getGender()}"></td>
+            <td th:text="${person.getDayOfBirth()}"></td>
+            <td th:text="${person.getAge()}"></td>
+            <td th:text="${person.getStreet()}"></td>
+            <td th:text="${person.getCity()}"></td>
+            <td th:text="${person.getPostalCode()}"></td>
+            <td th:text="${person.getPhoneNumber()}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Owned Accounts</h3>
+
+    <hr/>
+    <a th:href="@{/accountList/add(personId=${person.getPersonId()})}" class="btn btn-primary">New account</a>
+    <br/><br/>
+    <table class="table table-bordered table-striped" id="accountTable">
+
+        <thead>
+        <tr>
+            <th>Account ID</th>
+            <th>Nickname</th>
+            <th>Rank</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="account: ${accountList}">
+            <td th:text="${account.getAccountId()}" />
+            <td th:text="${account.getNick()}" />
+            <td th:text="${account.getRank()}" />
+            <td>
+                <a th:href="@{/accountList/checkout(accountId=${account.getAccountId()})}" class="btn btn-info">Checkout</a>
+                <a th:href="@{/accountList/update(accountId=${account.getAccountId()})}" class="btn btn-primary">Update</a>
+                <a class="btn btn-secondary ml-2">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+    <hr/>
+    <a th:href="@{/personList}">Person list</a>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#accountTable").DataTable({
+            'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': [-1]
+            }]
+        });
+    })
+</script>
+
+
+
+
+</body>
+</html>
